@@ -3,11 +3,8 @@ module Main where
 import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE, log)
-import Control.Monad.Except (runExcept)
-import Data.Either (Either(..))
 import Data.Foreign (F, Foreign, ForeignError(..), fail, readInt, readNull, tagOf, unsafeFromForeign)
 import Data.Foreign.Index (readProp)
-import Data.List.NonEmpty (NonEmptyList(..))
 import Data.Maybe (Maybe(..), maybe)
 import Data.Traversable (traverse)
 
@@ -20,9 +17,9 @@ newtype Door = Door {
 
 readMiddleRail :: Foreign -> F MiddleRail
 readMiddleRail value
-  | unsafeFromForeign value == "OneHundred" = pure OneHundred
-  | unsafeFromForeign value == "TwoHundred" = pure TwoHundred
-  | unsafeFromForeign value == "TwoHundredAndFifty" = pure TwoHundredAndFifty
+  | unsafeFromForeign value == 100 = pure OneHundred
+  | unsafeFromForeign value == 200 = pure TwoHundred
+  | unsafeFromForeign value == 250 = pure TwoHundredAndFifty
   | otherwise = fail $ TypeMismatch "MiddleRail" (tagOf value)
 
 readDoor :: Foreign -> F Door

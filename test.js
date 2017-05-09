@@ -8,7 +8,7 @@ const {
 
 const testDoor = {
   bob: 250,
-  middleRail: 'OneHundred'
+  middleRail: 100
 }
 
 console.log(isValidDoorJS(testDoor))

@@ -45,11 +45,12 @@ readMiddle value = do
   pure $ Middle { panels, rail }
 
 readMiddleRail :: Foreign -> F MiddleRail
-readMiddleRail value
-  | unsafeFromForeign value == 100 = pure OneHundred
-  | unsafeFromForeign value == 200 = pure TwoHundred
-  | unsafeFromForeign value == 250 = pure TwoHundredAndFifty
-  | otherwise = fail $ TypeMismatch "MiddleRail" (tagOf value)
+readMiddleRail value = readMiddleRail' $ unsafeFromForeign value
+  where readMiddleRail' unsafeValue 
+          | unsafeValue == 100 = pure OneHundred
+          | unsafeValue == 200 = pure TwoHundred
+          | unsafeValue == 250 = pure TwoHundredAndFifty
+          | otherwise = fail $ TypeMismatch "MiddleRail" (tagOf value)
 
 readPanel :: Foreign -> F Panel 
 readPanel value = do 
@@ -58,10 +59,11 @@ readPanel value = do
   pure $ Panel { x, y }
 
 readTopRail :: Foreign -> F TopRail
-readTopRail value 
-  | unsafeFromForeign value == "Standard" = pure Standard 
-  | unsafeFromForeign value == "Compact" = pure Compact
-  | otherwise = fail $ TypeMismatch "TopRail" (tagOf value)
+readTopRail value = readTopRail' $ unsafeFromForeign value
+  where readTopRail' unsafeValue
+          | unsafeValue == "Standard" = pure Standard 
+          | unsafeValue == "Compact" = pure Compact
+          | otherwise = fail $ TypeMismatch "TopRail" (tagOf value)
 
 isValidRails :: BottomRail -> TopRail -> Boolean 
 isValidRails _ Standard = true 
